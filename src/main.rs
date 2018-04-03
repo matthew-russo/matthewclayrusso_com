@@ -14,7 +14,7 @@ use regex::Regex;
 use std::error::Error;
 
 fn main() {
-    let addr = "127.0.0.1:3000".parse().unwrap();
+    let addr = "0.0.0.0:7777".parse().unwrap();
     let server = Http::new().bind(&addr, || Ok(HelloWorld)).unwrap();
     server.run().unwrap();
 }
@@ -29,9 +29,9 @@ impl Service for HelloWorld {
     type Future = Box<Future<Item=Self::Response, Error=Self::Error>>;
 
     fn call(&self, req: Request) -> Self::Future {
-        let resources = "/Users/matthewrusso/matthewclayrusso_com/resources/";
-        let mut html = "/Users/matthewrusso/matthewclayrusso_com/resources/html/application.html";
-        let mut font = "/Users/matthewrusso/matthewclayrusso_com/resources/html/MOON.json";
+        let resources = "/home/ec2-user/matthewclayrusso_com/resources/";
+        let mut html = "/home/ec2-user/matthewclayrusso_com/resources/html/application.html";
+        let mut font = "/home/ec2-user/matthewclayrusso_com/resources/html/MOON.json";
         let mut contents: Vec<u8> = Vec::new();
 
         let re = Regex::new(r"^/static/([a-zA-Z_-]+/[a-zA-Z_-]+\.[a-zA-Z]+)$").unwrap();
