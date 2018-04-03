@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=utf-8>
+        <title>Fuck wit me u know i got it</title>
+        <style>
+            body { margin: 0; }
+            canvas { width: 100%; height: 100% }
+        </style>
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            background: darkcyan;
+        }
+        .container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hello {
+            font-size: 28px;
+            font-family: sans-serif;
+            color: white;
+        }
+    </style>
+    <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/91/three.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/91/three.module.js"></script>-->
+
+    <script>
+        let scene = new THREE.Scene();
+        let camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+        let renderer = new THREE.WebGLRenderer();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( renderer.domElement );
+
+        // let ambientLight = new THREE.AmbientLight( 0xffffff );
+        // scene.add( ambientLight );
+
+        let lights = [];
+        lights[ 0 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+        lights[ 1 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+        lights[ 2 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+
+        lights[ 0 ].position.set( 0, 200, 0 );
+        lights[ 1 ].position.set( 100, 200, 100 );
+        lights[ 2 ].position.set( - 100, - 200, - 100 );
+
+        scene.add( lights[ 0 ] );
+        scene.add( lights[ 1 ] );
+        scene.add( lights[ 2 ] );
+
+        let geometry = new THREE.BoxGeometry( 1, 1, 1 );
+        let material = new THREE.MeshStandardMaterial( { color: 0xff0000 } );
+
+        let group = new THREE.Group();
+
+        // let cube = new THREE.Mesh( geometry, material );
+        // scene.add(cube);
+        // cube.position.x = 0;
+        // cube.position.y = 0;
+        // cube.position.z = 0;
+
+        let text;
+        let loader = new THREE.FontLoader();
+        loader.load( '/font', function ( font ) {
+            textMesh1 = new THREE.TextGeometry( 'Fuck wit me', {
+                font: font,
+                size: 10,
+                height: 10,
+            } );
+
+            // textMesh1.computeBoundingBox();
+            // textMesh1.computeVertexNormals();
+
+            let materials = [
+                new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } ), // front
+                new THREE.MeshPhongMaterial( { color: 0xffffff } ) // side
+            ];
+            let test = new THREE.MeshPhongMaterial( { color: 0xff0000 } );
+            text = new THREE.Mesh( textMesh1, test );
+
+            text.position.x = -50;
+            text.position.y = 0;
+            text.position.z = -70;
+
+            scene.add( text );
+        } );
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame( animate );
+            text.rotation.x += 0.03;
+            text.rotation.y += 0.03;
+
+            renderer.render( scene, camera );
+        }
+        animate();
+    </script>
+
+    <!--<div class="container">-->
+        <!--<div class="hello">-->
+            <!--hello world-->
+        <!--</div>-->
+    <!--</div>-->
+    </body>
+</html>

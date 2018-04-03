@@ -4,3 +4,6 @@ version = "0.1.0"
 authors = ["Matthew Russo <mcr431@nyu.edu>"]
 
 [dependencies]
+futures = "0.1.14"
+hyper = "0.11.2"
+regex = "0.2"

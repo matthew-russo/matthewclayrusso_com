@@ -1,0 +1,222 @@
+// Place all the styles related to the Portfolio controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import url('https://fonts.googleapis.com/css?family=PT+Sans');
+
+$radius: 6px;
+$hover: #D5D5D5;
+$transition: .2s;
+
+body{
+  font-family: 'PT Sans', sans-serif;
+}
+
+h2{
+  font-size:36px;
+}
+
+img{
+  border-radius: $radius;
+}
+
+.container {
+  width:100%;
+  display:flex;
+  flex-direction: column;
+  min-height:100vh;
+}
+
+.navigation {
+  position: fixed;
+  height:50px;
+  width:100%;
+  background-color:black;
+}
+
+.links{
+  height:50px;
+  display:flex;
+
+  & > * {
+    width:33.3%;
+  }
+  & > *:first-child {
+    justify-content: flex-start;
+  }
+  & > *:nth-child(2) {
+    justify-content: center;
+  }
+  & > *:last-child {
+    justify-content: flex-end;
+  }
+}
+
+.icon_container {
+  font-size:32px;
+  display:flex;
+  a{
+    color:white;
+  }
+}
+
+.link_container{
+  height:100%;
+  display:flex;
+  align-items: center;
+  padding:0 5px 0 5px;
+  &:hover{
+    background-color:grey;
+    cursor:pointer;
+  }
+}
+
+.main{
+  margin-top:50px;
+  width:100%;
+}
+
+.header {
+  background-color: #FF3B3F;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  color:white;
+}
+
+.personal_photo{
+  flex:5;
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  img{
+    height:300px;
+    margin:50px 50px 50px 0;
+    border-radius:50%;
+  }
+}
+
+.personal_info{
+  margin-left:50px;
+  flex:5;
+}
+
+.section {
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom:50px;
+}
+
+.about {
+  width:50%;
+}
+
+.info_container {
+  display:flex;
+  justify-content:center;
+  width:80%;
+  .info_img{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    flex:3;
+    img{
+      align-self: flex-start;
+      max-height:80px;
+      max-width:80px;
+      margin: 25px 50px 0 0;
+      //border-radius:4px;
+    }
+  }
+  .info{
+    flex:5;
+    p{
+      width:80%;
+    }
+  }
+}
+
+.project_grid {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  width:90%;
+}
+
+.row{
+  display:flex;
+  justify-content:space-around;
+  flex-wrap: wrap;
+}
+
+.project{
+  width:30%;
+  text-decoration:none;
+  color:black;
+  text-align:center;
+  border-radius: $radius;
+  transition: $transition;
+  overflow:hidden;
+
+  &:hover{
+    background-color:$hover;
+    transition:$transition;
+  }
+
+  img{
+    margin-top:10px;
+    width:95%;
+    max-height:350px;
+    overflow:hidden;
+  }
+}
+
+.more_projects {
+  margin-top:50px;
+  text-decoration: none;
+  font-size:24px;
+  color:black;
+  height:30px;
+  line-height:30px;
+  cursor: pointer;
+
+  &:before {
+      content: "";
+      position: absolute;
+      width: 122px;
+      height: 2px;
+
+      margin-top:30px;
+      background-color: black;
+      visibility: hidden;
+      -webkit-transform: scaleX(0);
+      transform: scaleX(0);
+      -webkit-transition: all 0.1s ease-in-out 0s;
+      transition: all 0.1s ease-in-out 0s;
+    }
+
+  &:hover:before {
+      visibility: visible;
+      -webkit-transform: scaleX(1);
+      transform: scaleX(1);
+    }
+
+  & i {
+    padding-left:10px;
+  }
+}
+
+#resume{
+  position:fixed;
+  bottom:5px;
+  left:10px;
+  font-size:36px;
+  a{
+    color:black;
+    transition: $transition;
+    &:hover{
+      color: #FF3B3F;
+      transition: $transition;
+    }
+  }
+}
