@@ -6,7 +6,6 @@ use futures::future::Future;
 
 use hyper::header::ContentLength;
 use hyper::server::{Http, Request, Response, Service};
-use hyper::{Method, StatusCode};
 
 use std::fs::File;
 use std::io::prelude::*;
@@ -14,7 +13,7 @@ use regex::Regex;
 use std::error::Error;
 
 fn main() {
-    let addr = "127.0.0.1:3000".parse().unwrap();
+    let addr = "127.0.0.1:7777".parse().unwrap();
     let server = Http::new().bind(&addr, || Ok(HelloWorld)).unwrap();
     server.run().unwrap();
 }
@@ -29,9 +28,8 @@ impl Service for HelloWorld {
     type Future = Box<Future<Item=Self::Response, Error=Self::Error>>;
 
     fn call(&self, req: Request) -> Self::Future {
-        let resources = "/Users/matthewrusso/matthewclayrusso_com/resources/";
-        let mut html = "/Users/matthewrusso/matthewclayrusso_com/resources/html/application.html";
-        let mut font = "/Users/matthewrusso/matthewclayrusso_com/resources/html/MOON.json";
+        let resources = "/Users/matthewrusso/rust/matthewclayrusso_com/resources/";
+        let html = "/Users/matthewrusso/rust/matthewclayrusso_com/resources/html/application.html";
         let mut contents: Vec<u8> = Vec::new();
 
         let re = Regex::new(r"^/static/([a-zA-Z_-]+/[a-zA-Z_-]+\.[a-zA-Z]+)$").unwrap();
