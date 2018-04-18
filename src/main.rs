@@ -13,7 +13,7 @@ use regex::Regex;
 use std::error::Error;
 
 fn main() {
-    let addr = "127.0.0.1:7777".parse().unwrap();
+    let addr = "0.0.0.0:7777".parse().unwrap();
     let server = Http::new().bind(&addr, || Ok(HelloWorld)).unwrap();
     server.run().unwrap();
 }
@@ -28,8 +28,8 @@ impl Service for HelloWorld {
     type Future = Box<Future<Item=Self::Response, Error=Self::Error>>;
 
     fn call(&self, req: Request) -> Self::Future {
-        let resources = "/Users/matthewrusso/rust/matthewclayrusso_com/resources/";
-        let html = "/Users/matthewrusso/rust/matthewclayrusso_com/resources/html/application.html";
+        let resources = "/home/ec2-user/matthewclayrusso_com/resources/";
+        let html = "/home/ec2-user/matthewclayrusso_com/resources/html/application.html";
         let mut contents: Vec<u8> = Vec::new();
 
         let re = Regex::new(r"^/static/([a-zA-Z_-]+/[a-zA-Z_-]+\.[a-zA-Z]+)$").unwrap();
@@ -62,9 +62,6 @@ impl Service for HelloWorld {
             }
         }
 
-        // We're currently ignoring the Request
-        // And returning an 'ok' Future, which means it's ready
-        // immediately, and build a Response with the 'PHRASE' body.
         Box::new(futures::future::ok(
             Response::new()
                 .with_header(ContentLength(contents.len() as u64))
