@@ -21,7 +21,6 @@ fn main() {
 struct HelloWorld;
 
 impl Service for HelloWorld {
-    // boilerplate hooking up hyper's server types
     type Request = Request;
     type Response = Response;
     type Error = hyper::Error;
