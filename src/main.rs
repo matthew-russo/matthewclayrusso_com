@@ -14,21 +14,21 @@ use std::error::Error;
 
 fn main() {
     let addr = "0.0.0.0:7777".parse().unwrap();
-    let server = Http::new().bind(&addr, || Ok(HelloWorld)).unwrap();
+    let server = Http::new().bind(&addr, || Ok(Server)).unwrap();
     server.run().unwrap();
 }
 
-struct HelloWorld;
+struct Server;
 
-impl Service for HelloWorld {
+impl Service for Server {
     type Request = Request;
     type Response = Response;
     type Error = hyper::Error;
-    type Future = Box<Future<Item=Self::Response, Error=Self::Error>>;
+    type Future = Box<dyn Future<Item=Self::Response, Error=Self::Error>>;
 
     fn call(&self, req: Request) -> Self::Future {
         let resources = "/home/ec2-user/matthewclayrusso_com/resources/";
-        let html = "/home/ec2-user/matthewclayrusso_com/resources/html/application.html";
+        let html = "/home/ec2-user/matthewclayrusso_com/resources/html/index.html";
         let mut contents: Vec<u8> = Vec::new();
 
         let re = Regex::new(r"^/static/([a-zA-Z_-]+/[a-zA-Z_-]+\.[a-zA-Z]+)$").unwrap();
