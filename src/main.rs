@@ -31,7 +31,7 @@ impl Service for Server {
         let html = "/home/ec2-user/matthewclayrusso_com/resources/html/index.html";
         let mut contents: Vec<u8> = Vec::new();
 
-        let re = Regex::new(r"^/static/([a-zA-Z_-]+/[a-zA-Z_-]+\.[a-zA-Z]+)$").unwrap();
+        let re = Regex::new(r"^/static/((?:[a-zA-Z_-]+/)+[a-zA-Z_-]+\.[a-zA-Z]+)$").unwrap();
 
         match re.captures(req.path()) {
             Some(caps) => {
