@@ -1,0 +1,5 @@
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+ExecStart=/home/ec2-user/matthewclayrusso_com/target/release/matthewclayrusso_com
