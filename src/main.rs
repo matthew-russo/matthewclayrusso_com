@@ -12,18 +12,43 @@ use std::io::prelude::*;
 use regex::Regex;
 use std::error::Error;
 
-const RESOURCES: &str = "/Users/matthewrusso/projects/rust/matthewclayrusso_com/resources";
-const BLOG: &str = "/Users/matthewrusso/projects/rust/matthewclayrusso_com/blog";
+const BASE: &str = "/Users/matthewrusso/projects/rust/matthewclayrusso_com";
+const RESOURCES: &str = "resources";
+const BLOG: &str = "blog";
 
 fn main() {
     let addr = "0.0.0.0:4919".parse().unwrap();
-    let server = Http::new().bind(&addr, || Ok(Server)).unwrap();
+    let server = Http::new().bind(&addr, || Ok(Server::new())).unwrap();
     server.run().unwrap();
 }
 
-struct Server;
+struct Server {
+    index_page: Vec<u8>,
+    blog_page: Vec<u8>,
+}
 
 impl Server {
+    pub fn new() -> Self {
+        let index_page = Self::load_file(format!("{}/html/index.html", RESOURCES)).expect("failed to load index page"); 
+        let blog_page = Self::load_file(format!("{}/index.html", BLOG)).expect("failed to load blog page");
+        Self {
+            index_page,
+            blog_page,
+        }
+    }
+
+    fn load_file(path: String) -> Option<Vec<u8>> {
+        let html_file = format!("{}/{}", BASE, path);
+        File::open(html_file)
+            .ok()
+            .and_then(|mut f| {
+                let mut contents: Vec<u8> = Vec::new();
+                f.read_to_end(&mut contents)
+                    .ok()
+                    .map(|_| contents)
+            })
+    }
+
     fn serve_blog(&self, req: &Request) -> Option<Vec<u8>> {
         let blog_re = Regex::new(r"^/blog(?:/([a-zA-Z_-]+))?$").unwrap();
 
@@ -38,13 +63,8 @@ impl Server {
                 "index"
             };
 
-            return File::open(format!("{}/{}.html", BLOG, filename))
-                .ok()
-                .map(|mut file| {
-                    let mut contents: Vec<u8> = Vec::new();
-                    file.read_to_end(&mut contents).expect("Something went wrong opening the file");
-                    contents
-                });
+            Self::load_file(format!("{}/{}.html", BLOG, filename))
+                .or(Some(Vec::clone(&self.blog_page)))
         } else {
             None
         }
@@ -55,25 +75,10 @@ impl Server {
 
         if let Some(caps) = static_re.captures(req.path()) {
             let filename = caps.get(1).unwrap().as_str();
-
-            return File::open(format!("{}/{}", RESOURCES, filename))
-                .ok()
-                .map(|mut file| {
-                    let mut contents: Vec<u8> = Vec::new();
-                    file.read_to_end(&mut contents).expect("Something went wrong opening the file");
-                    contents
-                });
+            Self::load_file(format!("{}/{}.html", RESOURCES, filename))
         } else {
             None
         }
-    }
-
-    fn serve_index(&self) -> Vec<u8> {
-        let html = "/Users/matthewrusso/projects/rust/matthewclayrusso_com/resources/html/index.html";
-        let mut f = File::open(html).expect("file not found");
-        let mut contents: Vec<u8> = Vec::new();
-        f.read_to_end(&mut contents).expect("something went wrong reading the file");
-        contents
     }
 }
 
@@ -89,7 +94,7 @@ impl Service for Server {
         } else if let Some(contents) = self.serve_static(&req) {
             contents
         } else {
-            self.serve_index()
+            Vec::clone(&self.index_page)
         };
 
         Box::new(futures::future::ok(
